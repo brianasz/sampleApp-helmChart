@@ -1,0 +1,59 @@
+# Default values for sampleApp-helmChart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: sample-app
+  pullPolicy: Never
+  tag: "latest"
+
+fullnameOverride: "sample-app"
+
+serviceAccount:
+  create: true
+  name: sample-app
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+autoscaling:
+  enabled: false
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: / # Default value
+    port: http
+  initialDelaySeconds: 10
+readinessProbe:
+  httpGet:
+    path: / # Default value
+    port: http
+  initialDelaySeconds: 10
